@@ -3,6 +3,7 @@
   import { link, navigate } from 'svelte-routing';
   import { api } from '../services/api.js';
   import { notifications } from '../stores/notificationStore.js';
+  import { events, EVENT_TYPES } from '../stores/eventStore.js';
   import Modal from '../components/Modal.svelte';
   import Loading from '../components/Loading.svelte';
 
@@ -74,6 +75,7 @@
     try {
       await api.budgets.updateStatus(budget.id, status);
       notifications.add('Status atualizado com sucesso!', 'success');
+      events.trigger(EVENT_TYPES.BUDGET_UPDATED);
       showStatusModal = false;
       await loadBudget();
     } catch (error) {
@@ -111,6 +113,7 @@
 
       await api.budgets.update(budget.id, data);
       notifications.add('Orçamento atualizado com sucesso!', 'success');
+      events.trigger(EVENT_TYPES.BUDGET_UPDATED);
       showEditModal = false;
       await loadBudget();
     } catch (error) {

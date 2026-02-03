@@ -3,6 +3,7 @@
   import { navigate } from 'svelte-routing';
   import { api } from '../services/api.js';
   import { notifications } from '../stores/notificationStore.js';
+  import { events, EVENT_TYPES } from '../stores/eventStore.js';
   import Loading from '../components/Loading.svelte';
 
   let patients = [];
@@ -91,6 +92,7 @@
 
       const budget = await api.budgets.create(data);
       notifications.add('Orçamento criado com sucesso!', 'success');
+      events.trigger(EVENT_TYPES.BUDGET_CREATED);
       navigate(`/budgets/${budget.id}`);
     } catch (error) {
       notifications.add(error.message || 'Erro ao criar orçamento', 'error');

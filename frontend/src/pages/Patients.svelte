@@ -3,6 +3,7 @@
   import { link } from 'svelte-routing';
   import { api } from '../services/api.js';
   import { notifications } from '../stores/notificationStore.js';
+  import { events, EVENT_TYPES } from '../stores/eventStore.js';
   import Modal from '../components/Modal.svelte';
   import Loading from '../components/Loading.svelte';
 
@@ -59,9 +60,11 @@
       if (editingPatient) {
         await api.patients.update(editingPatient.id, form);
         notifications.add('Paciente atualizado com sucesso!', 'success');
+        events.trigger(EVENT_TYPES.PATIENT_UPDATED);
       } else {
         await api.patients.create(form);
         notifications.add('Paciente criado com sucesso!', 'success');
+        events.trigger(EVENT_TYPES.PATIENT_CREATED);
       }
       closeModal();
       await loadPatients();

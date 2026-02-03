@@ -1,13 +1,15 @@
 <script>
-  import { onMount } from 'svelte';
+  import { onMount, onDestroy } from 'svelte';
   import { link } from 'svelte-routing';
   import { api } from '../services/api.js';
   import { notifications } from '../stores/notificationStore.js';
+  import { events, EVENT_TYPES } from '../stores/eventStore.js';
   import Loading from '../components/Loading.svelte';
 
   let budgets = [];
   let patients = [];
   let loading = true;
+  let unsubscribe;
 
   let stats = {
     totalBudgets: 0,
@@ -19,6 +21,24 @@
 
   onMount(async () => {
     await loadData();
+    
+    // Subscribe to events to reload data automatically
+    unsubscribe = events.subscribe((event) => {
+      if (event && [
+        EVENT_TYPES.BUDGET_CREATED,
+        EVENT_TYPES.BUDGET_UPDATED,
+        EVENT_TYPES.BUDGET_DELETED,
+        EVENT_TYPES.PATIENT_CREATED,
+        EVENT_TYPES.PATIENT_UPDATED,
+        EVENT_TYPES.PATIENT_DELETED,
+      ].includes(event.type)) {
+        loadData();
+      }
+    });
+  });
+
+  onDestroy(() => {
+    if (unsubscribe) unsubscribe();
   });
 
   async function loadData() {
