@@ -312,3 +312,5 @@ Desenvolvido para Clínica Gygy
 ---
 
 **Desenvolvido com ❤️ usando Svelte, Express e Prisma**
+#   C l - n i c a - G y g y  
+ 
