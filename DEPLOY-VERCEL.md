@@ -1,4 +1,4 @@
-# 🚀 Guia de Deploy - Clínica Gygy
+# 🚀 Guia de Deploy - Clínica Odontológica
 
 Este guia explica como fazer deploy do sistema na Vercel (frontend e backend).
 

@@ -1,4 +1,4 @@
-# Frontend - Clínica Gygy
+# Frontend - Clínica Odontológica
 
 Interface do usuário desenvolvida com Svelte e Tailwind CSS.
 

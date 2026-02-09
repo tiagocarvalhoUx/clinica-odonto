@@ -40,7 +40,7 @@
       <div class="inline-flex items-center justify-center w-16 h-16 sm:w-20 sm:h-20 bg-gradient-to-br from-primary-500 to-primary-600 rounded-3xl shadow-lg mb-4 animate-slide-down">
         <span class="text-3xl sm:text-4xl">🦷</span>
       </div>
-      <h1 class="text-2xl sm:text-3xl font-bold text-gray-900 mb-2">Clínica Gygy</h1>
+      <h1 class="text-2xl sm:text-3xl font-bold text-gray-900 mb-2">Clínica Odontológica</h1>
       <p class="text-sm sm:text-base text-gray-600">Sistema de Orçamentos Odontológicos</p>
     </div>
 
@@ -158,7 +158,7 @@
 
     <!-- Footer -->
     <div class="text-center mt-6 text-xs sm:text-sm text-gray-600">
-      <p>© 2026 Clínica Gygy. Todos os direitos reservados.</p>
+      <p>© 2026 Clínica Odontológica. Todos os direitos reservados.</p>
     </div>
   </div>
 </div>

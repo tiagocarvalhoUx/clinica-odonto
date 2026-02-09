@@ -31,7 +31,7 @@
           <div class="w-8 h-8 sm:w-10 sm:h-10 bg-gradient-to-br from-primary-500 to-primary-600 rounded-xl flex items-center justify-center shadow-md">
             <span class="text-lg sm:text-xl">🦷</span>
           </div>
-          <span class="text-lg sm:text-xl font-bold text-gradient hidden sm:inline">Clínica Gygy</span>
+          <span class="text-lg sm:text-xl font-bold text-gradient hidden sm:inline">Clínica Odontológica</span>
           <span class="text-base font-bold text-gradient sm:hidden">Gygy</span>
         </a>
 

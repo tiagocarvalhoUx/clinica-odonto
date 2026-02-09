@@ -1,4 +1,4 @@
-# Backend - Clínica Gygy
+# Backend - Clínica Odontológica
 
 API REST para o sistema de orçamentos odontológicos.
 

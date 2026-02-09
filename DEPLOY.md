@@ -1,6 +1,6 @@
 # 🚀 Guia de Deploy
 
-Este guia fornece instruções para fazer o deploy da aplicação Clínica Gygy em ambiente de produção.
+Este guia fornece instruções para fazer o deploy da aplicação Clínica Odontológica em ambiente de produção.
 
 ## 📋 Pré-requisitos
 

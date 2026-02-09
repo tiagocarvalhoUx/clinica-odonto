@@ -27,7 +27,7 @@ app.use(express.urlencoded({ extended: true }));
 // Root route
 app.get("/", (req, res) => {
   res.json({
-    message: "🦷 Clínica Gygy API",
+    message: "🦷 Clínica Odontológica API",
     version: "1.0.0",
     status: "online",
     endpoints: {
@@ -35,8 +35,8 @@ app.get("/", (req, res) => {
       auth: "/api/auth",
       patients: "/api/patients",
       budgets: "/api/budgets",
-      reports: "/api/reports"
-    }
+      reports: "/api/reports",
+    },
   });
 });
 

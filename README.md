@@ -10,6 +10,8 @@ Sistema completo de gestão de orçamentos odontológicos desenvolvido com **Sve
 - [Instalação](#instalação)
 - [Configuração](#configuração)
 - [Executando o Projeto](#executando-o-projeto)
+- [Testes](#testes)
+- [CI/CD](#cicd)
 - [Estrutura do Projeto](#estrutura-do-projeto)
 - [API Endpoints](#api-endpoints)
 - [Funcionalidades](#funcionalidades)
@@ -26,6 +28,9 @@ Sistema completo de gestão de orçamentos odontológicos desenvolvido com **Sve
 - ✅ **Interface responsiva** e moderna
 - ✅ **Validação de dados** no frontend e backend
 - ✅ **Tratamento de erros** robusto
+- ✅ **Testes automatizados** com Jest e Vitest
+- ✅ **CI/CD** com GitHub Actions
+- ✅ **Deploy automático** para Vercel
 
 ## 🚀 Tecnologias
 
@@ -156,6 +161,66 @@ npm run dev
 
 A aplicação estará disponível em: `http://localhost:5173`
 
+## 🧪 Testes
+
+O projeto possui testes automatizados tanto para backend quanto frontend.
+
+### Backend - Jest
+
+```bash
+cd backend
+npm test                  # Executar todos os testes
+npm run test:watch       # Modo watch
+npm run test:coverage    # Gerar relatório de cobertura
+```
+
+### Frontend - Vitest
+
+```bash
+cd frontend
+npm test                 # Executar todos os testes
+npm run test:ui          # Interface interativa
+npm run test:coverage    # Gerar relatório de cobertura
+```
+
+### Cobertura de Testes
+
+- **Backend**: Testes de API, autenticação, validações
+- **Frontend**: Testes de componentes, stores, renderização
+
+📖 **Documentação completa**: [TESTING.md](./TESTING.md)
+
+## 🚀 CI/CD
+
+O projeto utiliza GitHub Actions para integração e entrega contínua:
+
+- ✅ **Testes automáticos** em cada push/PR
+- ✅ **Deploy automático** para Vercel (branch main)
+- ✅ **Matriz de testes** (Node.js 18.x e 20.x)
+- ✅ **Scan de segurança** com npm audit
+- ✅ **Relatórios de cobertura** com Codecov
+
+### Workflows
+
+1. **CI/CD Principal** - Testes, build e deploy
+2. **PR Checks** - Validação de pull requests
+3. **Dependency Updates** - Verificação semanal de atualizações
+
+📖 **Documentação completa**: [CI-CD.md](./CI-CD.md)
+
+### Setup Rápido CI/CD
+
+```bash
+# 1. Configure os secrets no GitHub:
+# VERCEL_TOKEN, VERCEL_ORG_ID,
+# VERCEL_PROJECT_ID_BACKEND, VERCEL_PROJECT_ID_FRONTEND
+
+# 2. Push para main - o deploy será automático!
+git push origin main
+```
+
+📖 **Guia rápido**: [TESTS-AND-CICD-QUICKSTART.md](./TESTS-AND-CICD-QUICKSTART.md)
+
 ## 📁 Estrutura do Projeto
 
 ```
@@ -278,6 +343,9 @@ clinica-gygy/
 ```bash
 npm run dev        # Inicia servidor em modo desenvolvimento
 npm start          # Inicia servidor em modo produção
+npm test           # Executar testes
+npm run test:watch # Executar testes em modo watch
+npm run test:coverage  # Executar testes com cobertura
 npm run prisma:generate  # Gera o Prisma Client
 npm run prisma:migrate   # Executa migrations
 npm run prisma:studio    # Abre Prisma Studio
@@ -289,17 +357,22 @@ npm run prisma:studio    # Abre Prisma Studio
 npm run dev        # Inicia servidor de desenvolvimento
 npm run build      # Build para produção
 npm run preview    # Preview do build
+npm test           # Executar testes
+npm run test:ui    # Executar testes com UI interativa
+npm run test:coverage  # Executar testes com cobertura
 ```
 
 ## 🎯 Próximos Passos (Funcionalidades Futuras)
 
 - [ ] Envio de orçamentos por WhatsApp/Email
 - [ ] Exportação de orçamentos em PDF
-- [ ] Dashboard com gráficos e métricas
+- [ ] Dashboard com gráficos e métricas avançadas
 - [ ] Notificações automáticas
 - [ ] Sistema de agendamentos
 - [ ] Histórico de alterações
 - [ ] Backup automático
+- [ ] Testes E2E com Playwright
+- [ ] Análise de performance (Lighthouse CI)
 
 ## 📄 Licença
 
@@ -312,5 +385,6 @@ Desenvolvido para Clínica Gygy
 ---
 
 **Desenvolvido com ❤️ usando Svelte, Express e Prisma**
-#   C l - n i c a - G y g y  
+#   C l - n i c a - G y g y 
+ 
  

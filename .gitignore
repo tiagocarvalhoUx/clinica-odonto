@@ -3,3 +3,23 @@ dist
 .env
 *.log
 .DS_Store
+
+# Testes
+coverage/
+**/__tests__/coverage/
+.env.test
+
+# Build
+build/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Vercel
+.vercel/
+
+# Sistema
+Thumbs.db

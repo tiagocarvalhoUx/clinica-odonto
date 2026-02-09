@@ -8,7 +8,7 @@ export const reportController = {
       const budgets = await budgetService.getAll();
 
       const workbook = new ExcelJS.Workbook();
-      workbook.creator = "Clínica Gygy";
+      workbook.creator = "Clínica Odontológica";
       workbook.created = new Date();
 
       // Sheet 1: Orçamentos
@@ -242,7 +242,7 @@ export const reportController = {
       const patients = await patientService.getAll();
 
       const workbook = new ExcelJS.Workbook();
-      workbook.creator = "Clínica Gygy";
+      workbook.creator = "Clínica Odontológica";
       workbook.created = new Date();
 
       const sheet = workbook.addWorksheet("Pacientes", {
