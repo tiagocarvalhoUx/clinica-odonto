@@ -123,18 +123,18 @@ export const reportController = {
         views: [{ state: "frozen", ySplit: 3 }],
       });
 
-      // Configurar colunas (sem ID visível)
+      // Configurar colunas (ID oculto na coluna A)
       budgetsSheet.columns = [
-        { key: "id", width: 8, hidden: true },  // ID oculto
-        { key: "patient", width: 22 },          // Paciente
-        { key: "phone", width: 16 },            // Telefone
-        { key: "email", width: 28 },            // Email
-        { key: "dentist", width: 18 },          // Dentista
-        { key: "cro", width: 12 },              // CRO
-        { key: "total", width: 14 },            // Valor Total
-        { key: "status", width: 14 },           // Status
-        { key: "notes", width: 25 },            // Observações
-        { key: "user", width: 16 },             // Criado por
+        { key: "id", width: 8, hidden: true },  // A - ID oculto
+        { key: "patient", width: 22 },          // B - Paciente
+        { key: "phone", width: 16 },            // C - Telefone
+        { key: "email", width: 28 },            // D - Email
+        { key: "dentist", width: 18 },          // E - Dentista
+        { key: "cro", width: 12 },              // F - CRO
+        { key: "total", width: 14 },            // G - Valor Total
+        { key: "status", width: 14 },           // H - Status
+        { key: "notes", width: 25 },            // I - Observações
+        { key: "user", width: 16 },             // J - Criado por
       ];
 
       // Linha 1: Título
@@ -147,7 +147,7 @@ export const reportController = {
       // Linha 2: Vazia (espaço)
       budgetsSheet.getRow(2).height = 5;
 
-      // Linha 3: Headers
+      // Linha 3: Headers (começa na coluna B pois A está oculta)
       const headers = ["Paciente", "Telefone", "Email", "Dentista", "CRO", "Valor Total", "Status", "Observações", "Criado por"];
       headers.forEach((header, idx) => {
         const cell = budgetsSheet.getCell(3, idx + 2); // Começa na coluna B (índice 2)
@@ -182,7 +182,7 @@ export const reportController = {
         const row = budgetsSheet.addRow(rowData);
         const rowNum = row.number;
 
-        // Formatar cada célula
+        // Formatar cada célula (colunas B a J = 2 a 10)
         for (let col = 2; col <= 10; col++) {
           const cell = budgetsSheet.getCell(rowNum, col);
           cell.border = {
@@ -248,42 +248,39 @@ export const reportController = {
         bottom: { style: "medium", color: { argb: COLOR_PRIMARY } },
       };
 
-      // Auto-filter
+      // Auto-filter (nas colunas visíveis B a J)
       budgetsSheet.autoFilter = {
         from: { row: 3, column: 2 },
         to: { row: 3, column: 10 },
       };
 
       // ============================================
-      // SHEET 3: DASHBOARD COM GRÁFICOS
+      // SHEET 3: DASHBOARD (Tabelas de análise)
       // ============================================
       const dashboardSheet = workbook.addWorksheet("Dashboard");
 
-      // Configurar colunas para layout lado a lado
+      // Configurar colunas
       dashboardSheet.columns = [
         { width: 3 },   // A
-        { width: 12 },  // B
-        { width: 12 },  // C
-        { width: 14 },  // D
-        { width: 12 },  // E
+        { width: 20 },  // B
+        { width: 14 },  // C
+        { width: 16 },  // D
+        { width: 14 },  // E
         { width: 3 },   // F (espaço)
-        { width: 18 },  // G
-        { width: 18 },  // H
-        { width: 18 },  // I
-        { width: 3 },   // J (espaço)
-        { width: 18 },  // K
-        { width: 18 },  // L
+        { width: 20 },  // G
+        { width: 14 },  // H
+        { width: 16 },  // I
       ];
 
       // Título principal
-      dashboardSheet.mergeCells("B1:L1");
+      dashboardSheet.mergeCells("B1:I1");
       dashboardSheet.getCell("B1").value = "DASHBOARD DE ORÇAMENTOS";
       dashboardSheet.getCell("B1").font = { bold: true, size: 16, color: { argb: COLOR_PRIMARY } };
       dashboardSheet.getCell("B1").alignment = { horizontal: "center", vertical: "middle" };
       dashboardSheet.getRow(1).height = 28;
 
       // ============================================
-      // TABELA: ANÁLISE POR STATUS
+      // TABELA 1: ANÁLISE POR STATUS (Esquerda)
       // ============================================
       dashboardSheet.getCell("B3").value = "ANÁLISE POR STATUS";
       dashboardSheet.getCell("B3").font = { bold: true, size: 11, color: { argb: COLOR_PRIMARY } };
@@ -373,16 +370,16 @@ export const reportController = {
       }
 
       // ============================================
-      // TABELA: ANÁLISE POR DENTISTA
+      // TABELA 2: ANÁLISE POR DENTISTA (Direita - coluna G)
       // ============================================
-      rowIdx += 2;
-      dashboardSheet.getCell(rowIdx, 2).value = "ANÁLISE POR DENTISTA";
-      dashboardSheet.getCell(rowIdx, 2).font = { bold: true, size: 11, color: { argb: COLOR_PRIMARY } };
+      let dentistStartRow = 3;
+      dashboardSheet.getCell(dentistStartRow, 7).value = "ANÁLISE POR DENTISTA";
+      dashboardSheet.getCell(dentistStartRow, 7).font = { bold: true, size: 11, color: { argb: COLOR_PRIMARY } };
 
-      rowIdx++;
-      const dentistHeaders = ["Dentista", "Quantidade", "Valor Total", "Ticket Médio"];
+      dentistStartRow++;
+      const dentistHeaders = ["Dentista", "Quantidade", "Valor Total"];
       dentistHeaders.forEach((h, i) => {
-        const cell = dashboardSheet.getCell(rowIdx, i + 2);
+        const cell = dashboardSheet.getCell(dentistStartRow, i + 7);
         cell.value = h;
         cell.font = { bold: true, color: { argb: "FFFFFF" }, size: 10 };
         cell.fill = { type: "pattern", pattern: "solid", fgColor: { argb: COLOR_HEADER } };
@@ -406,32 +403,29 @@ export const reportController = {
         dentistStats[name].total += parseFloat(b.finalTotal || b.total || 0);
       });
 
-      rowIdx++;
+      dentistStartRow++;
       Object.entries(dentistStats).forEach(([name, stats]) => {
-        dashboardSheet.getCell(rowIdx, 2).value = name;
-        dashboardSheet.getCell(rowIdx, 2).alignment = { horizontal: "left" };
-        dashboardSheet.getCell(rowIdx, 3).value = stats.count;
-        dashboardSheet.getCell(rowIdx, 3).alignment = { horizontal: "center" };
-        dashboardSheet.getCell(rowIdx, 4).value = stats.total;
-        dashboardSheet.getCell(rowIdx, 4).numFmt = '"R$" #,##0.00';
-        dashboardSheet.getCell(rowIdx, 4).alignment = { horizontal: "right" };
-        dashboardSheet.getCell(rowIdx, 5).value = stats.total / stats.count;
-        dashboardSheet.getCell(rowIdx, 5).numFmt = '"R$" #,##0.00';
-        dashboardSheet.getCell(rowIdx, 5).alignment = { horizontal: "right" };
+        dashboardSheet.getCell(dentistStartRow, 7).value = name;
+        dashboardSheet.getCell(dentistStartRow, 7).alignment = { horizontal: "left" };
+        dashboardSheet.getCell(dentistStartRow, 8).value = stats.count;
+        dashboardSheet.getCell(dentistStartRow, 8).alignment = { horizontal: "center" };
+        dashboardSheet.getCell(dentistStartRow, 9).value = stats.total;
+        dashboardSheet.getCell(dentistStartRow, 9).numFmt = '"R$" #,##0.00';
+        dashboardSheet.getCell(dentistStartRow, 9).alignment = { horizontal: "right" };
 
-        for (let c = 2; c <= 5; c++) {
-          dashboardSheet.getCell(rowIdx, c).border = {
+        for (let c = 7; c <= 9; c++) {
+          dashboardSheet.getCell(dentistStartRow, c).border = {
             top: { style: "thin", color: { argb: "E7E6E6" } },
             bottom: { style: "thin", color: { argb: "E7E6E6" } },
             left: { style: "thin", color: { argb: "E7E6E6" } },
             right: { style: "thin", color: { argb: "E7E6E6" } },
           };
         }
-        rowIdx++;
+        dentistStartRow++;
       });
 
       // ============================================
-      // TABELA: ANÁLISE POR PACIENTE
+      // TABELA 3: ANÁLISE POR PACIENTE (Abaixo da de status)
       // ============================================
       rowIdx += 2;
       dashboardSheet.getCell(rowIdx, 2).value = "ANÁLISE POR PACIENTE";
@@ -484,66 +478,6 @@ export const reportController = {
         }
         rowIdx++;
       });
-
-      // ============================================
-      // GRÁFICOS
-      // ============================================
-      
-      // Gráfico de Pizza - Distribuição por Status
-      const pieChart = workbook.addChart({
-        type: "pie",
-        title: "Distribuição por Status",
-      });
-
-      pieChart.addData({
-        labels: ["Aceito", "Em Negociação"],
-        values: [aceitos, emNegociacao],
-        seriesName: "Quantidade",
-      });
-
-      pieChart.setPosition("G3", "I13");
-      dashboardSheet.addChart(pieChart);
-
-      // Gráfico de Barras - Valor por Dentista
-      const barChart = workbook.addChart({
-        type: "bar",
-        title: "Valor Total por Dentista",
-        xAxis: { title: "Dentista" },
-        yAxis: { title: "Valor (R$)" },
-      });
-
-      const dentistNames = Object.keys(dentistStats);
-      const dentistValues = dentistNames.map(name => dentistStats[name].total);
-
-      barChart.addData({
-        labels: dentistNames,
-        values: dentistValues,
-        seriesName: "Valor Total",
-      });
-
-      barChart.setPosition("G15", "I28");
-      dashboardSheet.addChart(barChart);
-
-      // Gráfico de Barras Horizontal - Valor por Paciente
-      const patientBarChart = workbook.addChart({
-        type: "bar",
-        subtype: "horizontal",
-        title: "Valor Total por Paciente",
-        xAxis: { title: "Valor (R$)" },
-        yAxis: { title: "Paciente" },
-      });
-
-      const patientNames = Object.keys(patientStats);
-      const patientValues = patientNames.map(name => patientStats[name].total);
-
-      patientBarChart.addData({
-        labels: patientNames,
-        values: patientValues,
-        seriesName: "Valor Total",
-      });
-
-      patientBarChart.setPosition("K3", "L20");
-      dashboardSheet.addChart(patientBarChart);
 
       // ============================================
       // GERAR E ENVIAR
