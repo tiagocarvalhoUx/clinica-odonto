@@ -19,7 +19,13 @@ const app = express();
 app.use(
   cors({
     origin: (origin, callback) => {
-      const allowed = (process.env.CORS_ORIGIN || "http://localhost:5173").split(",").map(o => o.trim());
+      const corsOrigin = process.env.CORS_ORIGIN || "http://localhost:5173";
+      // Se for wildcard, permite qualquer origem
+      if (corsOrigin === "*") {
+        callback(null, true);
+        return;
+      }
+      const allowed = corsOrigin.split(",").map((o) => o.trim());
       if (!origin || allowed.includes(origin)) {
         callback(null, true);
       } else {
