@@ -46,6 +46,7 @@ export const budgetController = {
 
       const budgetData = {
         patientId: req.body.patientId,
+        dentistId: req.body.dentistId,
         userId: req.user.id, // Get user ID from authenticated token
         items,
         notes: req.body.notes,
