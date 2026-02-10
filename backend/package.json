@@ -15,7 +15,8 @@
     "prisma:migrate": "prisma migrate dev",
     "prisma:studio": "prisma studio",
     "create-user": "node create-user.js",
-    "generate-sql": "node generate-sql.js"
+    "generate-sql": "node generate-sql.js",
+    "list-dentists": "node scripts/list-dentists.js"
   },
   "keywords": [
     "dental",
