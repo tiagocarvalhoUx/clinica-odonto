@@ -50,18 +50,19 @@ export const reportController = {
 
       // Add data
       budgets.forEach((budget) => {
+        console.log("Budget:", budget.id, "Dentist:", budget.dentist);
         const row = budgetsSheet.addRow({
           id: budget.id,
           date: new Date(budget.createdAt).toLocaleString("pt-BR"),
-          patient: budget.patient.name,
-          phone: budget.patient.phone || "-",
-          email: budget.patient.email || "-",
-          dentist: budget.dentist ? budget.dentist.name : "-",
-          cro: budget.dentist ? budget.dentist.cro : "-",
-          total: parseFloat(budget.finalTotal || budget.total),
+          patient: budget.patient?.name || "-",
+          phone: budget.patient?.phone || "-",
+          email: budget.patient?.email || "-",
+          dentist: budget.dentist?.name || "-",
+          cro: budget.dentist?.cro || "-",
+          total: parseFloat(budget.finalTotal || budget.total || 0),
           status: getStatusLabel(budget.status),
           notes: budget.notes || "-",
-          user: budget.user.name,
+          user: budget.user?.name || "-",
         });
 
         // Format currency
