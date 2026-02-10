@@ -19,251 +19,155 @@ export const reportController = {
       const recusados = budgets.filter(b => b.status === "RECUSADO").length;
       const ticketMedio = totalOrcamentos > 0 ? valorTotal / totalOrcamentos : 0;
 
-      // Sheet 1: Capa
+      // Cores do tema
+      const COLOR_PRIMARY = "1F4E79";      // Azul escuro (títulos)
+      const COLOR_HEADER = "1F4E79";       // Azul escuro (headers)
+      const COLOR_TEXT = "000000";         // Preto
+      const COLOR_GRAY = "666666";         // Cinza
+      const COLOR_STATUS_ACEITO = "C6EFCE"; // Verde claro
+      const COLOR_STATUS_NEGOCIACAO = "FFEB9C"; // Amarelo claro
+      const COLOR_STATUS_RECUSADO = "FFC7CE"; // Vermelho claro
+
+      // ============================================
+      // SHEET 1: CAPA
+      // ============================================
       const capaSheet = workbook.addWorksheet("Capa");
       
       // Configurar larguras das colunas
       capaSheet.columns = [
-        { width: 3 },
-        { width: 30 },
-        { width: 3 },
-        { width: 30 },
+        { width: 5 },   // A
+        { width: 25 },  // B
+        { width: 15 },  // C
+        { width: 25 },  // D
+        { width: 15 },  // E
       ];
 
-      // Estilos
-      const titleStyle = {
-        font: { bold: true, size: 20, color: { argb: "FF0369A1" } },
-        alignment: { horizontal: "center", vertical: "middle" },
-      };
-      
-      const subtitleStyle = {
-        font: { size: 12, color: { argb: "FF666666" } },
-        alignment: { horizontal: "center", vertical: "middle" },
-      };
-      
-      const sectionStyle = {
-        font: { bold: true, size: 14, color: { argb: "FF0369A1" } },
-        alignment: { horizontal: "center", vertical: "middle" },
-      };
-      
-      const metricLabelStyle = {
-        font: { bold: true, size: 11, color: { argb: "FF444444" } },
-        alignment: { horizontal: "center", vertical: "middle" },
-        fill: { type: "pattern", pattern: "solid", fgColor: { argb: "FFF0F9FF" } },
-      };
-      
-      const metricValueStyle = {
-        font: { bold: true, size: 16, color: { argb: "FF0369A1" } },
-        alignment: { horizontal: "center", vertical: "middle" },
-        fill: { type: "pattern", pattern: "solid", fgColor: { argb: "FFE0F2FE" } },
-      };
-
-      // Título
-      capaSheet.mergeCells("B2:D2");
+      // Linha 2: Título principal
+      capaSheet.mergeCells("B2:E2");
       capaSheet.getCell("B2").value = "RELATÓRIO DE ORÇAMENTOS";
-      capaSheet.getCell("B2").font = titleStyle.font;
-      capaSheet.getCell("B2").alignment = titleStyle.alignment;
-      capaSheet.getRow(2).height = 35;
+      capaSheet.getCell("B2").font = { bold: true, size: 18, color: { argb: COLOR_PRIMARY } };
+      capaSheet.getCell("B2").alignment = { horizontal: "center", vertical: "middle" };
+      capaSheet.getRow(2).height = 30;
 
-      // Subtítulo
-      capaSheet.mergeCells("B3:D3");
+      // Linha 3: Subtítulo
+      capaSheet.mergeCells("B3:E3");
       capaSheet.getCell("B3").value = "Clínica Odontológica - Análise de Orçamentos";
-      capaSheet.getCell("B3").font = subtitleStyle.font;
-      capaSheet.getCell("B3").alignment = subtitleStyle.alignment;
+      capaSheet.getCell("B3").font = { size: 11, color: { argb: COLOR_GRAY } };
+      capaSheet.getCell("B3").alignment = { horizontal: "center", vertical: "middle" };
 
-      // Data
-      capaSheet.mergeCells("B5:D5");
+      // Linha 5: Data
+      capaSheet.mergeCells("B5:E5");
       capaSheet.getCell("B5").value = `Data do Relatório: ${new Date().toLocaleDateString("pt-BR")}`;
-      capaSheet.getCell("B5").font = { size: 11, color: { argb: "FF666666" } };
+      capaSheet.getCell("B5").font = { size: 10, color: { argb: COLOR_GRAY } };
       capaSheet.getCell("B5").alignment = { horizontal: "center" };
 
-      // Seção Métricas
-      capaSheet.mergeCells("B7:D7");
+      // Linha 7: Seção Métricas Chave
+      capaSheet.mergeCells("B7:E7");
       capaSheet.getCell("B7").value = "MÉTRICAS CHAVE";
-      capaSheet.getCell("B7").font = sectionStyle.font;
-      capaSheet.getCell("B7").alignment = sectionStyle.alignment;
-      capaSheet.getRow(7).height = 25;
+      capaSheet.getCell("B7").font = { bold: true, size: 12, color: { argb: COLOR_PRIMARY } };
+      capaSheet.getCell("B7").alignment = { horizontal: "left" };
+      capaSheet.getRow(7).height = 22;
 
-      // Métricas - Linha 1
+      // Linha 9-10: Total de Orçamentos | Valor Total
       capaSheet.getCell("B9").value = "Total de Orçamentos";
-      capaSheet.getCell("B9").font = metricLabelStyle.font;
-      capaSheet.getCell("B9").alignment = metricLabelStyle.alignment;
-      capaSheet.getCell("B9").fill = metricLabelStyle.fill;
-      capaSheet.getCell("B9").border = {
-        top: { style: "thin", color: { argb: "FF0369A1" } },
-        left: { style: "thin", color: { argb: "FF0369A1" } },
-        right: { style: "thin", color: { argb: "FF0369A1" } },
-      };
+      capaSheet.getCell("B9").font = { size: 10, color: { argb: COLOR_GRAY } };
+      capaSheet.getCell("B10").value = totalOrcamentos;
+      capaSheet.getCell("B10").font = { bold: true, size: 14, color: { argb: COLOR_TEXT } };
 
       capaSheet.getCell("D9").value = "Valor Total";
-      capaSheet.getCell("D9").font = metricLabelStyle.font;
-      capaSheet.getCell("D9").alignment = metricLabelStyle.alignment;
-      capaSheet.getCell("D9").fill = metricLabelStyle.fill;
-      capaSheet.getCell("D9").border = {
-        top: { style: "thin", color: { argb: "FF0369A1" } },
-        left: { style: "thin", color: { argb: "FF0369A1" } },
-        right: { style: "thin", color: { argb: "FF0369A1" } },
-      };
-
-      capaSheet.getCell("B10").value = totalOrcamentos;
-      capaSheet.getCell("B10").font = metricValueStyle.font;
-      capaSheet.getCell("B10").alignment = metricValueStyle.alignment;
-      capaSheet.getCell("B10").fill = metricValueStyle.fill;
-      capaSheet.getCell("B10").border = {
-        left: { style: "thin", color: { argb: "FF0369A1" } },
-        bottom: { style: "thin", color: { argb: "FF0369A1" } },
-        right: { style: "thin", color: { argb: "FF0369A1" } },
-      };
-
+      capaSheet.getCell("D9").font = { size: 10, color: { argb: COLOR_GRAY } };
       capaSheet.getCell("D10").value = valorTotal;
-      capaSheet.getCell("D10").font = metricValueStyle.font;
-      capaSheet.getCell("D10").alignment = metricValueStyle.alignment;
-      capaSheet.getCell("D10").fill = metricValueStyle.fill;
-      capaSheet.getCell("D10").numFmt = "R$ #,##0.00";
-      capaSheet.getCell("D10").border = {
-        left: { style: "thin", color: { argb: "FF0369A1" } },
-        bottom: { style: "thin", color: { argb: "FF0369A1" } },
-        right: { style: "thin", color: { argb: "FF0369A1" } },
-      };
+      capaSheet.getCell("D10").font = { bold: true, size: 14, color: { argb: COLOR_TEXT } };
+      capaSheet.getCell("D10").numFmt = '"R$" #,##0.00';
 
-      // Métricas - Linha 2
+      // Linha 11-12: Orçamentos Aceitos | Em Negociação
       capaSheet.getCell("B11").value = "Orçamentos Aceitos";
-      capaSheet.getCell("B11").font = metricLabelStyle.font;
-      capaSheet.getCell("B11").alignment = metricLabelStyle.alignment;
-      capaSheet.getCell("B11").fill = metricLabelStyle.fill;
-      capaSheet.getCell("B11").border = {
-        top: { style: "thin", color: { argb: "FF10B981" } },
-        left: { style: "thin", color: { argb: "FF10B981" } },
-        right: { style: "thin", color: { argb: "FF10B981" } },
-      };
+      capaSheet.getCell("B11").font = { size: 10, color: { argb: COLOR_GRAY } };
+      capaSheet.getCell("B12").value = aceitos;
+      capaSheet.getCell("B12").font = { bold: true, size: 14, color: { argb: COLOR_TEXT } };
 
       capaSheet.getCell("D11").value = "Em Negociação";
-      capaSheet.getCell("D11").font = metricLabelStyle.font;
-      capaSheet.getCell("D11").alignment = metricLabelStyle.alignment;
-      capaSheet.getCell("D11").fill = metricLabelStyle.fill;
-      capaSheet.getCell("D11").border = {
-        top: { style: "thin", color: { argb: "FFF59E0B" } },
-        left: { style: "thin", color: { argb: "FFF59E0B" } },
-        right: { style: "thin", color: { argb: "FFF59E0B" } },
-      };
-
-      capaSheet.getCell("B12").value = aceitos;
-      capaSheet.getCell("B12").font = { bold: true, size: 16, color: { argb: "FF10B981" } };
-      capaSheet.getCell("B12").alignment = metricValueStyle.alignment;
-      capaSheet.getCell("B12").fill = { type: "pattern", pattern: "solid", fgColor: { argb: "FFD1FAE5" } };
-      capaSheet.getCell("B12").border = {
-        left: { style: "thin", color: { argb: "FF10B981" } },
-        bottom: { style: "thin", color: { argb: "FF10B981" } },
-        right: { style: "thin", color: { argb: "FF10B981" } },
-      };
-
+      capaSheet.getCell("D11").font = { size: 10, color: { argb: COLOR_GRAY } };
       capaSheet.getCell("D12").value = emNegociacao;
-      capaSheet.getCell("D12").font = { bold: true, size: 16, color: { argb: "FFF59E0B" } };
-      capaSheet.getCell("D12").alignment = metricValueStyle.alignment;
-      capaSheet.getCell("D12").fill = { type: "pattern", pattern: "solid", fgColor: { argb: "FFFEF3C7" } };
-      capaSheet.getCell("D12").border = {
-        left: { style: "thin", color: { argb: "FFF59E0B" } },
-        bottom: { style: "thin", color: { argb: "FFF59E0B" } },
-        right: { style: "thin", color: { argb: "FFF59E0B" } },
-      };
+      capaSheet.getCell("D12").font = { bold: true, size: 14, color: { argb: COLOR_TEXT } };
 
-      // Ticket Médio
+      // Linha 13-14: Ticket Médio
       capaSheet.getCell("B13").value = "Ticket Médio";
-      capaSheet.getCell("B13").font = metricLabelStyle.font;
-      capaSheet.getCell("B13").alignment = metricLabelStyle.alignment;
-      capaSheet.getCell("B13").fill = metricLabelStyle.fill;
-      capaSheet.getCell("B13").border = {
-        top: { style: "thin", color: { argb: "FF8B5CF6" } },
-        left: { style: "thin", color: { argb: "FF8B5CF6" } },
-        right: { style: "thin", color: { argb: "FF8B5CF6" } },
-      };
-
+      capaSheet.getCell("B13").font = { size: 10, color: { argb: COLOR_GRAY } };
       capaSheet.getCell("B14").value = ticketMedio;
-      capaSheet.getCell("B14").font = { bold: true, size: 16, color: { argb: "FF8B5CF6" } };
-      capaSheet.getCell("B14").alignment = metricValueStyle.alignment;
-      capaSheet.getCell("B14").fill = { type: "pattern", pattern: "solid", fgColor: { argb: "FFEDE9FE" } };
-      capaSheet.getCell("B14").numFmt = "R$ #,##0.00";
-      capaSheet.getCell("B14").border = {
-        left: { style: "thin", color: { argb: "FF8B5CF6" } },
-        bottom: { style: "thin", color: { argb: "FF8B5CF6" } },
-        right: { style: "thin", color: { argb: "FF8B5CF6" } },
-      };
+      capaSheet.getCell("B14").font = { bold: true, size: 14, color: { argb: COLOR_TEXT } };
+      capaSheet.getCell("B14").numFmt = '"R$" #,##0.00';
 
-      // Seção Conteúdo
-      capaSheet.mergeCells("B16:D16");
+      // Linha 16: Conteúdo do Relatório
+      capaSheet.mergeCells("B16:E16");
       capaSheet.getCell("B16").value = "CONTEÚDO DO RELATÓRIO";
-      capaSheet.getCell("B16").font = sectionStyle.font;
-      capaSheet.getCell("B16").alignment = sectionStyle.alignment;
-      capaSheet.getRow(16).height = 25;
+      capaSheet.getCell("B16").font = { bold: true, size: 12, color: { argb: COLOR_PRIMARY } };
+      capaSheet.getCell("B16").alignment = { horizontal: "left" };
+      capaSheet.getRow(16).height = 22;
 
-      // Descrição das abas
-      const contentStyle = {
-        font: { size: 11 },
-        alignment: { vertical: "middle" },
-      };
-
+      // Linha 18-19: Links para abas
       capaSheet.getCell("B18").value = "Orçamentos";
-      capaSheet.getCell("B18").font = { bold: true, size: 11, color: { argb: "FF0369A1" } };
+      capaSheet.getCell("B18").font = { bold: true, size: 11, color: { argb: COLOR_PRIMARY } };
       capaSheet.getCell("D18").value = "Lista completa de orçamentos com filtros";
-      capaSheet.getCell("D18").font = contentStyle.font;
+      capaSheet.getCell("D18").font = { size: 10, color: { argb: COLOR_GRAY } };
 
       capaSheet.getCell("B19").value = "Dashboard";
-      capaSheet.getCell("B19").font = { bold: true, size: 11, color: { argb: "FF0369A1" } };
+      capaSheet.getCell("B19").font = { bold: true, size: 11, color: { argb: COLOR_PRIMARY } };
       capaSheet.getCell("D19").value = "Gráficos e análises visuais";
-      capaSheet.getCell("D19").font = contentStyle.font;
+      capaSheet.getCell("D19").font = { size: 10, color: { argb: COLOR_GRAY } };
 
-      // Sheet 2: Orçamentos
+      // ============================================
+      // SHEET 2: ORÇAMENTOS
+      // ============================================
       const budgetsSheet = workbook.addWorksheet("Orcamentos", {
         views: [{ state: "frozen", ySplit: 3 }],
       });
 
-      // Título da aba
-      budgetsSheet.mergeCells("A1:K1");
-      budgetsSheet.getCell("A1").value = "ORÇAMENTOS";
-      budgetsSheet.getCell("A1").font = { bold: true, size: 16, color: { argb: "FF0369A1" } };
-      budgetsSheet.getCell("A1").alignment = { horizontal: "center", vertical: "middle" };
-      budgetsSheet.getRow(1).height = 30;
-
-      // Linha em branco
-      budgetsSheet.getRow(2).height = 5;
-
-      // Define columns
+      // Configurar colunas (sem ID visível)
       budgetsSheet.columns = [
-        { header: "ID", key: "id", width: 10 },
-        { header: "Data", key: "date", width: 15 },
-        { header: "Paciente", key: "patient", width: 25 },
-        { header: "Telefone", key: "phone", width: 18 },
-        { header: "Email", key: "email", width: 30 },
-        { header: "Dentista", key: "dentist", width: 25 },
-        { header: "CRO", key: "cro", width: 15 },
-        { header: "Valor Total", key: "total", width: 15 },
-        { header: "Status", key: "status", width: 18 },
-        { header: "Observações", key: "notes", width: 35 },
-        { header: "Criado por", key: "user", width: 20 },
+        { key: "id", width: 8, hidden: true },  // ID oculto
+        { key: "patient", width: 22 },          // Paciente
+        { key: "phone", width: 16 },            // Telefone
+        { key: "email", width: 28 },            // Email
+        { key: "dentist", width: 18 },          // Dentista
+        { key: "cro", width: 12 },              // CRO
+        { key: "total", width: 14 },            // Valor Total
+        { key: "status", width: 14 },           // Status
+        { key: "notes", width: 25 },            // Observações
+        { key: "user", width: 16 },             // Criado por
       ];
 
-      // Style header row (linha 3)
-      budgetsSheet.getRow(3).font = {
-        bold: true,
-        size: 11,
-        color: { argb: "FFFFFFFF" },
-      };
-      budgetsSheet.getRow(3).fill = {
-        type: "pattern",
-        pattern: "solid",
-        fgColor: { argb: "FF0369A1" },
-      };
-      budgetsSheet.getRow(3).alignment = {
-        vertical: "middle",
-        horizontal: "center",
-      };
-      budgetsSheet.getRow(3).height = 22;
+      // Linha 1: Título
+      budgetsSheet.mergeCells("A1:J1");
+      budgetsSheet.getCell("A1").value = "ORÇAMENTOS";
+      budgetsSheet.getCell("A1").font = { bold: true, size: 16, color: { argb: COLOR_PRIMARY } };
+      budgetsSheet.getCell("A1").alignment = { horizontal: "center", vertical: "middle" };
+      budgetsSheet.getRow(1).height = 28;
 
-      // Add data
+      // Linha 2: Vazia (espaço)
+      budgetsSheet.getRow(2).height = 5;
+
+      // Linha 3: Headers
+      const headers = ["Paciente", "Telefone", "Email", "Dentista", "CRO", "Valor Total", "Status", "Observações", "Criado por"];
+      headers.forEach((header, idx) => {
+        const cell = budgetsSheet.getCell(3, idx + 2); // Começa na coluna B (índice 2)
+        cell.value = header;
+        cell.font = { bold: true, color: { argb: "FFFFFF" }, size: 11 };
+        cell.fill = { type: "pattern", pattern: "solid", fgColor: { argb: COLOR_HEADER } };
+        cell.alignment = { horizontal: "center", vertical: "middle" };
+        cell.border = {
+          top: { style: "thin", color: { argb: "D9D9D9" } },
+          bottom: { style: "thin", color: { argb: "D9D9D9" } },
+          left: { style: "thin", color: { argb: "D9D9D9" } },
+          right: { style: "thin", color: { argb: "D9D9D9" } },
+        };
+      });
+      budgetsSheet.getRow(3).height = 20;
+
+      // Adicionar dados
       budgets.forEach((budget) => {
-        const row = budgetsSheet.addRow({
+        const rowData = {
           id: budget.id,
-          date: new Date(budget.createdAt).toLocaleDateString("pt-BR"),
           patient: budget.patient?.name || "-",
           phone: budget.patient?.phone || "-",
           email: budget.patient?.email || "-",
@@ -273,203 +177,221 @@ export const reportController = {
           status: getStatusLabel(budget.status),
           notes: budget.notes || "-",
           user: budget.user?.name || "-",
-        });
+        };
 
-        // Format currency
-        row.getCell("total").numFmt = "R$ #,##0.00";
+        const row = budgetsSheet.addRow(rowData);
+        const rowNum = row.number;
 
-        // Conditional formatting for status
-        const statusCell = row.getCell("status");
-        if (budget.status === "ACEITO") {
-          statusCell.fill = {
-            type: "pattern",
-            pattern: "solid",
-            fgColor: { argb: "FF10B981" },
-          };
-          statusCell.font = { color: { argb: "FFFFFFFF" }, bold: true };
-        } else if (budget.status === "RECUSADO") {
-          statusCell.fill = {
-            type: "pattern",
-            pattern: "solid",
-            fgColor: { argb: "FFEF4444" },
-          };
-          statusCell.font = { color: { argb: "FFFFFFFF" }, bold: true };
-        } else if (budget.status === "EM_NEGOCIACAO") {
-          statusCell.fill = {
-            type: "pattern",
-            pattern: "solid",
-            fgColor: { argb: "FFF59E0B" },
-          };
-          statusCell.font = { color: { argb: "FFFFFFFF" }, bold: true };
-        }
-
-        // Add borders
-        row.eachCell((cell) => {
+        // Formatar cada célula
+        for (let col = 2; col <= 10; col++) {
+          const cell = budgetsSheet.getCell(rowNum, col);
           cell.border = {
-            top: { style: "thin", color: { argb: "FFE5E7EB" } },
-            left: { style: "thin", color: { argb: "FFE5E7EB" } },
-            bottom: { style: "thin", color: { argb: "FFE5E7EB" } },
-            right: { style: "thin", color: { argb: "FFE5E7EB" } },
+            top: { style: "thin", color: { argb: "E7E6E6" } },
+            bottom: { style: "thin", color: { argb: "E7E6E6" } },
+            left: { style: "thin", color: { argb: "E7E6E6" } },
+            right: { style: "thin", color: { argb: "E7E6E6" } },
           };
           cell.alignment = { vertical: "middle", wrapText: true };
-        });
+        }
+
+        // Formato moeda para Valor Total (coluna G = 7)
+        budgetsSheet.getCell(rowNum, 7).numFmt = '"R$" #,##0.00';
+        budgetsSheet.getCell(rowNum, 7).alignment = { horizontal: "right", vertical: "middle" };
+
+        // Status com cor de fundo (coluna H = 8)
+        const statusCell = budgetsSheet.getCell(rowNum, 8);
+        if (budget.status === "ACEITO") {
+          statusCell.fill = { type: "pattern", pattern: "solid", fgColor: { argb: COLOR_STATUS_ACEITO } };
+          statusCell.font = { color: { argb: "006100" } }; // Verde escuro
+        } else if (budget.status === "EM_NEGOCIACAO") {
+          statusCell.fill = { type: "pattern", pattern: "solid", fgColor: { argb: COLOR_STATUS_NEGOCIACAO } };
+          statusCell.font = { color: { argb: "9C5700" } }; // Laranja/Amarelo escuro
+        } else if (budget.status === "RECUSADO") {
+          statusCell.fill = { type: "pattern", pattern: "solid", fgColor: { argb: COLOR_STATUS_RECUSADO } };
+          statusCell.font = { color: { argb: "9C0006" } }; // Vermelho escuro
+        }
+        statusCell.alignment = { horizontal: "center", vertical: "middle" };
       });
 
       // Linha de Totais
-      const totalRow = budgetsSheet.addRow({});
-      const startRow = budgetsSheet.rowCount;
-      budgetsSheet.mergeCells(`A${startRow}:G${startRow}`);
-      budgetsSheet.getCell(`A${startRow}`).value = "TOTAIS";
-      budgetsSheet.getCell(`A${startRow}`).font = { bold: true, size: 12, color: { argb: "FF0369A1" } };
-      budgetsSheet.getCell(`A${startRow}`).alignment = { horizontal: "right", vertical: "middle" };
-      budgetsSheet.getCell(`A${startRow}`).fill = { type: "pattern", pattern: "solid", fgColor: { argb: "FFF0F9FF" } };
+      const lastDataRow = budgetsSheet.rowCount;
+      const totalRow = lastDataRow + 2;
 
-      budgetsSheet.getCell(`H${startRow}`).value = valorTotal;
-      budgetsSheet.getCell(`H${startRow}`).font = { bold: true, size: 12, color: { argb: "FF0369A1" } };
-      budgetsSheet.getCell(`H${startRow}`).numFmt = "R$ #,##0.00";
-      budgetsSheet.getCell(`H${startRow}`).alignment = { horizontal: "center", vertical: "middle" };
-      budgetsSheet.getCell(`H${startRow}`).fill = { type: "pattern", pattern: "solid", fgColor: { argb: "FFF0F9FF" } };
+      // "Total:"
+      budgetsSheet.getCell(totalRow, 6).value = "Total:";
+      budgetsSheet.getCell(totalRow, 6).font = { bold: true, size: 11 };
+      budgetsSheet.getCell(totalRow, 6).alignment = { horizontal: "right", vertical: "middle" };
 
-      budgetsSheet.getCell(`I${startRow}`).value = `Média: ${ticketMedio.toLocaleString("pt-BR", { style: "currency", currency: "BRL" })}`;
-      budgetsSheet.getCell(`I${startRow}`).font = { bold: true, size: 11, color: { argb: "FF666666" } };
-      budgetsSheet.getCell(`I${startRow}`).alignment = { horizontal: "center", vertical: "middle" };
-      budgetsSheet.getCell(`I${startRow}`).fill = { type: "pattern", pattern: "solid", fgColor: { argb: "FFF0F9FF" } };
-
-      // Bordas na linha de totais
-      ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K"].forEach(col => {
-        budgetsSheet.getCell(`${col}${startRow}`).border = {
-          top: { style: "medium", color: { argb: "FF0369A1" } },
-          bottom: { style: "medium", color: { argb: "FF0369A1" } },
-        };
-      });
-
-      // Apply auto-filter
-      budgetsSheet.autoFilter = {
-        from: "A3",
-        to: "K3",
+      // Valor total
+      budgetsSheet.getCell(totalRow, 7).value = valorTotal;
+      budgetsSheet.getCell(totalRow, 7).font = { bold: true, size: 11, color: { argb: COLOR_PRIMARY } };
+      budgetsSheet.getCell(totalRow, 7).numFmt = '"R$" #,##0.00';
+      budgetsSheet.getCell(totalRow, 7).alignment = { horizontal: "right", vertical: "middle" };
+      budgetsSheet.getCell(totalRow, 7).border = {
+        top: { style: "medium", color: { argb: COLOR_PRIMARY } },
+        bottom: { style: "medium", color: { argb: COLOR_PRIMARY } },
       };
 
-      // Sheet 3: Dashboard
+      // "Média:"
+      budgetsSheet.getCell(totalRow, 8).value = "Média:";
+      budgetsSheet.getCell(totalRow, 8).font = { bold: true, size: 11 };
+      budgetsSheet.getCell(totalRow, 8).alignment = { horizontal: "right", vertical: "middle" };
+
+      // Valor médio (span duas colunas para a direita)
+      budgetsSheet.mergeCells(`I${totalRow}:J${totalRow}`);
+      budgetsSheet.getCell(totalRow, 9).value = ticketMedio;
+      budgetsSheet.getCell(totalRow, 9).font = { bold: true, size: 11, color: { argb: COLOR_PRIMARY } };
+      budgetsSheet.getCell(totalRow, 9).numFmt = '"R$" #,##0.00';
+      budgetsSheet.getCell(totalRow, 9).alignment = { horizontal: "right", vertical: "middle" };
+      budgetsSheet.getCell(totalRow, 9).border = {
+        top: { style: "medium", color: { argb: COLOR_PRIMARY } },
+        bottom: { style: "medium", color: { argb: COLOR_PRIMARY } },
+      };
+
+      // Auto-filter
+      budgetsSheet.autoFilter = {
+        from: { row: 3, column: 2 },
+        to: { row: 3, column: 10 },
+      };
+
+      // ============================================
+      // SHEET 3: DASHBOARD COM GRÁFICOS
+      // ============================================
       const dashboardSheet = workbook.addWorksheet("Dashboard");
-      
-      // Título
-      dashboardSheet.mergeCells("A1:D1");
-      dashboardSheet.getCell("A1").value = "DASHBOARD DE ORÇAMENTOS";
-      dashboardSheet.getCell("A1").font = { bold: true, size: 16, color: { argb: "FF0369A1" } };
-      dashboardSheet.getCell("A1").alignment = { horizontal: "center", vertical: "middle" };
-      dashboardSheet.getRow(1).height = 30;
 
-      // Análise por Status
-      dashboardSheet.getCell("A3").value = "ANÁLISE POR STATUS";
-      dashboardSheet.getCell("A3").font = { bold: true, size: 13, color: { argb: "FF0369A1" } };
-      dashboardSheet.getRow(3).height = 22;
+      // Configurar colunas para layout lado a lado
+      dashboardSheet.columns = [
+        { width: 3 },   // A
+        { width: 12 },  // B
+        { width: 12 },  // C
+        { width: 14 },  // D
+        { width: 12 },  // E
+        { width: 3 },   // F (espaço)
+        { width: 18 },  // G
+        { width: 18 },  // H
+        { width: 18 },  // I
+        { width: 3 },   // J (espaço)
+        { width: 18 },  // K
+        { width: 18 },  // L
+      ];
 
-      // Header Status
+      // Título principal
+      dashboardSheet.mergeCells("B1:L1");
+      dashboardSheet.getCell("B1").value = "DASHBOARD DE ORÇAMENTOS";
+      dashboardSheet.getCell("B1").font = { bold: true, size: 16, color: { argb: COLOR_PRIMARY } };
+      dashboardSheet.getCell("B1").alignment = { horizontal: "center", vertical: "middle" };
+      dashboardSheet.getRow(1).height = 28;
+
+      // ============================================
+      // TABELA: ANÁLISE POR STATUS
+      // ============================================
+      dashboardSheet.getCell("B3").value = "ANÁLISE POR STATUS";
+      dashboardSheet.getCell("B3").font = { bold: true, size: 11, color: { argb: COLOR_PRIMARY } };
+
+      // Headers
       const statusHeaders = ["Status", "Quantidade", "Valor Total", "% do Total"];
-      statusHeaders.forEach((header, idx) => {
-        const cell = dashboardSheet.getCell(4, idx + 1);
-        cell.value = header;
-        cell.font = { bold: true, color: { argb: "FFFFFFFF" } };
-        cell.fill = { type: "pattern", pattern: "solid", fgColor: { argb: "FF0369A1" } };
+      statusHeaders.forEach((h, i) => {
+        const cell = dashboardSheet.getCell(4, i + 2);
+        cell.value = h;
+        cell.font = { bold: true, color: { argb: "FFFFFF" }, size: 10 };
+        cell.fill = { type: "pattern", pattern: "solid", fgColor: { argb: COLOR_HEADER } };
         cell.alignment = { horizontal: "center", vertical: "middle" };
         cell.border = {
-          top: { style: "thin" },
-          left: { style: "thin" },
-          bottom: { style: "thin" },
-          right: { style: "thin" },
+          top: { style: "thin", color: { argb: "D9D9D9" } },
+          bottom: { style: "thin", color: { argb: "D9D9D9" } },
+          left: { style: "thin", color: { argb: "D9D9D9" } },
+          right: { style: "thin", color: { argb: "D9D9D9" } },
         };
       });
 
       // Dados por status
-      const statusData = [
-        { status: "Aceito", count: aceitos, color: "FF10B981", bgColor: "FFD1FAE5" },
-        { status: "Em Negociação", count: emNegociacao, color: "FFF59E0B", bgColor: "FFFEF3C7" },
-        { status: "Recusado", count: recusados, color: "FFEF4444", bgColor: "FFFEE2E2" },
+      const statusRows = [
+        { label: "Aceito", count: aceitos, color: COLOR_STATUS_ACEITO, textColor: "006100" },
+        { label: "Em Negociação", count: emNegociacao, color: COLOR_STATUS_NEGOCIACAO, textColor: "9C5700" },
+        { label: "Recusado", count: recusados, color: COLOR_STATUS_RECUSADO, textColor: "9C0006" },
       ];
 
       let rowIdx = 5;
-      statusData.forEach(({ status, count, color, bgColor }) => {
+      statusRows.forEach(({ label, count, color, textColor }) => {
         const valor = budgets
-          .filter(b => getStatusLabel(b.status) === status)
+          .filter(b => getStatusLabel(b.status) === label)
           .reduce((sum, b) => sum + parseFloat(b.finalTotal || b.total || 0), 0);
-        const percent = totalOrcamentos > 0 ? (count / totalOrcamentos) : 0;
+        const percent = totalOrcamentos > 0 ? count / totalOrcamentos : 0;
 
-        dashboardSheet.getCell(rowIdx, 1).value = status;
-        dashboardSheet.getCell(rowIdx, 1).font = { bold: true, color: { argb: color } };
-        dashboardSheet.getCell(rowIdx, 1).fill = { type: "pattern", pattern: "solid", fgColor: { argb: bgColor } };
-        
-        dashboardSheet.getCell(rowIdx, 2).value = count;
+        // Status
+        dashboardSheet.getCell(rowIdx, 2).value = label;
+        dashboardSheet.getCell(rowIdx, 2).font = { bold: true, color: { argb: textColor } };
+        dashboardSheet.getCell(rowIdx, 2).fill = { type: "pattern", pattern: "solid", fgColor: { argb: color } };
         dashboardSheet.getCell(rowIdx, 2).alignment = { horizontal: "center" };
-        
-        dashboardSheet.getCell(rowIdx, 3).value = valor;
-        dashboardSheet.getCell(rowIdx, 3).numFmt = "R$ #,##0.00";
+
+        // Quantidade
+        dashboardSheet.getCell(rowIdx, 3).value = count;
         dashboardSheet.getCell(rowIdx, 3).alignment = { horizontal: "center" };
-        
-        dashboardSheet.getCell(rowIdx, 4).value = percent;
-        dashboardSheet.getCell(rowIdx, 4).numFmt = "0.00%";
-        dashboardSheet.getCell(rowIdx, 4).alignment = { horizontal: "center" };
+
+        // Valor Total
+        dashboardSheet.getCell(rowIdx, 4).value = valor;
+        dashboardSheet.getCell(rowIdx, 4).numFmt = '"R$" #,##0.00';
+        dashboardSheet.getCell(rowIdx, 4).alignment = { horizontal: "right" };
+
+        // Percentual
+        dashboardSheet.getCell(rowIdx, 5).value = percent;
+        dashboardSheet.getCell(rowIdx, 5).numFmt = "0.00%";
+        dashboardSheet.getCell(rowIdx, 5).alignment = { horizontal: "center" };
 
         // Bordas
-        for (let col = 1; col <= 4; col++) {
-          dashboardSheet.getCell(rowIdx, col).border = {
-            top: { style: "thin", color: { argb: "FFE5E7EB" } },
-            left: { style: "thin", color: { argb: "FFE5E7EB" } },
-            bottom: { style: "thin", color: { argb: "FFE5E7EB" } },
-            right: { style: "thin", color: { argb: "FFE5E7EB" } },
+        for (let c = 2; c <= 5; c++) {
+          dashboardSheet.getCell(rowIdx, c).border = {
+            top: { style: "thin", color: { argb: "E7E6E6" } },
+            bottom: { style: "thin", color: { argb: "E7E6E6" } },
+            left: { style: "thin", color: { argb: "E7E6E6" } },
+            right: { style: "thin", color: { argb: "E7E6E6" } },
           };
         }
         rowIdx++;
       });
 
       // Linha TOTAL
-      dashboardSheet.getCell(rowIdx, 1).value = "TOTAL";
-      dashboardSheet.getCell(rowIdx, 1).font = { bold: true };
-      dashboardSheet.getCell(rowIdx, 1).fill = { type: "pattern", pattern: "solid", fgColor: { argb: "FFF0F9FF" } };
-      
-      dashboardSheet.getCell(rowIdx, 2).value = totalOrcamentos;
+      dashboardSheet.getCell(rowIdx, 2).value = "TOTAL";
       dashboardSheet.getCell(rowIdx, 2).font = { bold: true };
-      dashboardSheet.getCell(rowIdx, 2).alignment = { horizontal: "center" };
-      dashboardSheet.getCell(rowIdx, 2).fill = { type: "pattern", pattern: "solid", fgColor: { argb: "FFF0F9FF" } };
-      
-      dashboardSheet.getCell(rowIdx, 3).value = valorTotal;
+      dashboardSheet.getCell(rowIdx, 3).value = totalOrcamentos;
       dashboardSheet.getCell(rowIdx, 3).font = { bold: true };
-      dashboardSheet.getCell(rowIdx, 3).numFmt = "R$ #,##0.00";
       dashboardSheet.getCell(rowIdx, 3).alignment = { horizontal: "center" };
-      dashboardSheet.getCell(rowIdx, 3).fill = { type: "pattern", pattern: "solid", fgColor: { argb: "FFF0F9FF" } };
-      
-      dashboardSheet.getCell(rowIdx, 4).value = 1;
+      dashboardSheet.getCell(rowIdx, 4).value = valorTotal;
       dashboardSheet.getCell(rowIdx, 4).font = { bold: true };
-      dashboardSheet.getCell(rowIdx, 4).numFmt = "0.00%";
-      dashboardSheet.getCell(rowIdx, 4).alignment = { horizontal: "center" };
-      dashboardSheet.getCell(rowIdx, 4).fill = { type: "pattern", pattern: "solid", fgColor: { argb: "FFF0F9FF" } };
+      dashboardSheet.getCell(rowIdx, 4).numFmt = '"R$" #,##0.00';
+      dashboardSheet.getCell(rowIdx, 4).alignment = { horizontal: "right" };
+      dashboardSheet.getCell(rowIdx, 5).value = 1;
+      dashboardSheet.getCell(rowIdx, 5).font = { bold: true };
+      dashboardSheet.getCell(rowIdx, 5).numFmt = "0.00%";
+      dashboardSheet.getCell(rowIdx, 5).alignment = { horizontal: "center" };
 
-      for (let col = 1; col <= 4; col++) {
-        dashboardSheet.getCell(rowIdx, col).border = {
-          top: { style: "medium", color: { argb: "FF0369A1" } },
-          bottom: { style: "medium", color: { argb: "FF0369A1" } },
+      for (let c = 2; c <= 5; c++) {
+        dashboardSheet.getCell(rowIdx, c).border = {
+          top: { style: "medium", color: { argb: COLOR_PRIMARY } },
+          bottom: { style: "medium", color: { argb: COLOR_PRIMARY } },
         };
       }
 
-      // Análise por Dentista
-      rowIdx += 3;
-      dashboardSheet.getCell(rowIdx, 1).value = "ANÁLISE POR DENTISTA";
-      dashboardSheet.getCell(rowIdx, 1).font = { bold: true, size: 13, color: { argb: "FF0369A1" } };
-      dashboardSheet.getRow(rowIdx).height = 22;
+      // ============================================
+      // TABELA: ANÁLISE POR DENTISTA
+      // ============================================
+      rowIdx += 2;
+      dashboardSheet.getCell(rowIdx, 2).value = "ANÁLISE POR DENTISTA";
+      dashboardSheet.getCell(rowIdx, 2).font = { bold: true, size: 11, color: { argb: COLOR_PRIMARY } };
 
       rowIdx++;
-      // Header Dentista
       const dentistHeaders = ["Dentista", "Quantidade", "Valor Total", "Ticket Médio"];
-      dentistHeaders.forEach((header, idx) => {
-        const cell = dashboardSheet.getCell(rowIdx, idx + 1);
-        cell.value = header;
-        cell.font = { bold: true, color: { argb: "FFFFFFFF" } };
-        cell.fill = { type: "pattern", pattern: "solid", fgColor: { argb: "FF0369A1" } };
+      dentistHeaders.forEach((h, i) => {
+        const cell = dashboardSheet.getCell(rowIdx, i + 2);
+        cell.value = h;
+        cell.font = { bold: true, color: { argb: "FFFFFF" }, size: 10 };
+        cell.fill = { type: "pattern", pattern: "solid", fgColor: { argb: COLOR_HEADER } };
         cell.alignment = { horizontal: "center", vertical: "middle" };
         cell.border = {
-          top: { style: "thin" },
-          left: { style: "thin" },
-          bottom: { style: "thin" },
-          right: { style: "thin" },
+          top: { style: "thin", color: { argb: "D9D9D9" } },
+          bottom: { style: "thin", color: { argb: "D9D9D9" } },
+          left: { style: "thin", color: { argb: "D9D9D9" } },
+          right: { style: "thin", color: { argb: "D9D9D9" } },
         };
       });
 
@@ -486,47 +408,48 @@ export const reportController = {
 
       rowIdx++;
       Object.entries(dentistStats).forEach(([name, stats]) => {
-        dashboardSheet.getCell(rowIdx, 1).value = name;
-        dashboardSheet.getCell(rowIdx, 2).value = stats.count;
-        dashboardSheet.getCell(rowIdx, 2).alignment = { horizontal: "center" };
-        dashboardSheet.getCell(rowIdx, 3).value = stats.total;
-        dashboardSheet.getCell(rowIdx, 3).numFmt = "R$ #,##0.00";
+        dashboardSheet.getCell(rowIdx, 2).value = name;
+        dashboardSheet.getCell(rowIdx, 2).alignment = { horizontal: "left" };
+        dashboardSheet.getCell(rowIdx, 3).value = stats.count;
         dashboardSheet.getCell(rowIdx, 3).alignment = { horizontal: "center" };
-        dashboardSheet.getCell(rowIdx, 4).value = stats.total / stats.count;
-        dashboardSheet.getCell(rowIdx, 4).numFmt = "R$ #,##0.00";
-        dashboardSheet.getCell(rowIdx, 4).alignment = { horizontal: "center" };
+        dashboardSheet.getCell(rowIdx, 4).value = stats.total;
+        dashboardSheet.getCell(rowIdx, 4).numFmt = '"R$" #,##0.00';
+        dashboardSheet.getCell(rowIdx, 4).alignment = { horizontal: "right" };
+        dashboardSheet.getCell(rowIdx, 5).value = stats.total / stats.count;
+        dashboardSheet.getCell(rowIdx, 5).numFmt = '"R$" #,##0.00';
+        dashboardSheet.getCell(rowIdx, 5).alignment = { horizontal: "right" };
 
-        for (let col = 1; col <= 4; col++) {
-          dashboardSheet.getCell(rowIdx, col).border = {
-            top: { style: "thin", color: { argb: "FFE5E7EB" } },
-            left: { style: "thin", color: { argb: "FFE5E7EB" } },
-            bottom: { style: "thin", color: { argb: "FFE5E7EB" } },
-            right: { style: "thin", color: { argb: "FFE5E7EB" } },
+        for (let c = 2; c <= 5; c++) {
+          dashboardSheet.getCell(rowIdx, c).border = {
+            top: { style: "thin", color: { argb: "E7E6E6" } },
+            bottom: { style: "thin", color: { argb: "E7E6E6" } },
+            left: { style: "thin", color: { argb: "E7E6E6" } },
+            right: { style: "thin", color: { argb: "E7E6E6" } },
           };
         }
         rowIdx++;
       });
 
-      // Análise por Paciente
+      // ============================================
+      // TABELA: ANÁLISE POR PACIENTE
+      // ============================================
       rowIdx += 2;
-      dashboardSheet.getCell(rowIdx, 1).value = "ANÁLISE POR PACIENTE";
-      dashboardSheet.getCell(rowIdx, 1).font = { bold: true, size: 13, color: { argb: "FF0369A1" } };
-      dashboardSheet.getRow(rowIdx).height = 22;
+      dashboardSheet.getCell(rowIdx, 2).value = "ANÁLISE POR PACIENTE";
+      dashboardSheet.getCell(rowIdx, 2).font = { bold: true, size: 11, color: { argb: COLOR_PRIMARY } };
 
       rowIdx++;
-      // Header Paciente
       const patientHeaders = ["Paciente", "Orçamentos", "Valor Total"];
-      patientHeaders.forEach((header, idx) => {
-        const cell = dashboardSheet.getCell(rowIdx, idx + 1);
-        cell.value = header;
-        cell.font = { bold: true, color: { argb: "FFFFFFFF" } };
-        cell.fill = { type: "pattern", pattern: "solid", fgColor: { argb: "FF0369A1" } };
+      patientHeaders.forEach((h, i) => {
+        const cell = dashboardSheet.getCell(rowIdx, i + 2);
+        cell.value = h;
+        cell.font = { bold: true, color: { argb: "FFFFFF" }, size: 10 };
+        cell.fill = { type: "pattern", pattern: "solid", fgColor: { argb: COLOR_HEADER } };
         cell.alignment = { horizontal: "center", vertical: "middle" };
         cell.border = {
-          top: { style: "thin" },
-          left: { style: "thin" },
-          bottom: { style: "thin" },
-          right: { style: "thin" },
+          top: { style: "thin", color: { argb: "D9D9D9" } },
+          bottom: { style: "thin", color: { argb: "D9D9D9" } },
+          left: { style: "thin", color: { argb: "D9D9D9" } },
+          right: { style: "thin", color: { argb: "D9D9D9" } },
         };
       });
 
@@ -543,36 +466,90 @@ export const reportController = {
 
       rowIdx++;
       Object.entries(patientStats).forEach(([name, stats]) => {
-        dashboardSheet.getCell(rowIdx, 1).value = name;
-        dashboardSheet.getCell(rowIdx, 2).value = stats.count;
-        dashboardSheet.getCell(rowIdx, 2).alignment = { horizontal: "center" };
-        dashboardSheet.getCell(rowIdx, 3).value = stats.total;
-        dashboardSheet.getCell(rowIdx, 3).numFmt = "R$ #,##0.00";
+        dashboardSheet.getCell(rowIdx, 2).value = name;
+        dashboardSheet.getCell(rowIdx, 2).alignment = { horizontal: "left" };
+        dashboardSheet.getCell(rowIdx, 3).value = stats.count;
         dashboardSheet.getCell(rowIdx, 3).alignment = { horizontal: "center" };
+        dashboardSheet.getCell(rowIdx, 4).value = stats.total;
+        dashboardSheet.getCell(rowIdx, 4).numFmt = '"R$" #,##0.00';
+        dashboardSheet.getCell(rowIdx, 4).alignment = { horizontal: "right" };
 
-        for (let col = 1; col <= 3; col++) {
-          dashboardSheet.getCell(rowIdx, col).border = {
-            top: { style: "thin", color: { argb: "FFE5E7EB" } },
-            left: { style: "thin", color: { argb: "FFE5E7EB" } },
-            bottom: { style: "thin", color: { argb: "FFE5E7EB" } },
-            right: { style: "thin", color: { argb: "FFE5E7EB" } },
+        for (let c = 2; c <= 4; c++) {
+          dashboardSheet.getCell(rowIdx, c).border = {
+            top: { style: "thin", color: { argb: "E7E6E6" } },
+            bottom: { style: "thin", color: { argb: "E7E6E6" } },
+            left: { style: "thin", color: { argb: "E7E6E6" } },
+            right: { style: "thin", color: { argb: "E7E6E6" } },
           };
         }
         rowIdx++;
       });
 
-      // Ajustar larguras do Dashboard
-      dashboardSheet.columns = [
-        { width: 30 },
-        { width: 15 },
-        { width: 18 },
-        { width: 15 },
-      ];
+      // ============================================
+      // GRÁFICOS
+      // ============================================
+      
+      // Gráfico de Pizza - Distribuição por Status
+      const pieChart = workbook.addChart({
+        type: "pie",
+        title: "Distribuição por Status",
+      });
 
-      // Generate buffer
+      pieChart.addData({
+        labels: ["Aceito", "Em Negociação"],
+        values: [aceitos, emNegociacao],
+        seriesName: "Quantidade",
+      });
+
+      pieChart.setPosition("G3", "I13");
+      dashboardSheet.addChart(pieChart);
+
+      // Gráfico de Barras - Valor por Dentista
+      const barChart = workbook.addChart({
+        type: "bar",
+        title: "Valor Total por Dentista",
+        xAxis: { title: "Dentista" },
+        yAxis: { title: "Valor (R$)" },
+      });
+
+      const dentistNames = Object.keys(dentistStats);
+      const dentistValues = dentistNames.map(name => dentistStats[name].total);
+
+      barChart.addData({
+        labels: dentistNames,
+        values: dentistValues,
+        seriesName: "Valor Total",
+      });
+
+      barChart.setPosition("G15", "I28");
+      dashboardSheet.addChart(barChart);
+
+      // Gráfico de Barras Horizontal - Valor por Paciente
+      const patientBarChart = workbook.addChart({
+        type: "bar",
+        subtype: "horizontal",
+        title: "Valor Total por Paciente",
+        xAxis: { title: "Valor (R$)" },
+        yAxis: { title: "Paciente" },
+      });
+
+      const patientNames = Object.keys(patientStats);
+      const patientValues = patientNames.map(name => patientStats[name].total);
+
+      patientBarChart.addData({
+        labels: patientNames,
+        values: patientValues,
+        seriesName: "Valor Total",
+      });
+
+      patientBarChart.setPosition("K3", "L20");
+      dashboardSheet.addChart(patientBarChart);
+
+      // ============================================
+      // GERAR E ENVIAR
+      // ============================================
       const buffer = await workbook.xlsx.writeBuffer();
 
-      // Set response headers
       res.setHeader(
         "Content-Type",
         "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
@@ -618,7 +595,7 @@ export const reportController = {
       sheet.getRow(1).fill = {
         type: "pattern",
         pattern: "solid",
-        fgColor: { argb: "FF0369A1" },
+        fgColor: { argb: "FF1F4E79" },
       };
       sheet.getRow(1).alignment = { vertical: "middle", horizontal: "center" };
       sheet.getRow(1).height = 25;
