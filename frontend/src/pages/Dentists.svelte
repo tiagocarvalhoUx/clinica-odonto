@@ -28,8 +28,10 @@
     loadDentists();
 
     // Subscribe to events
-    const unsubscribe = events.subscribe(EVENT_TYPES.BUDGET_CREATED, () => {
-      loadDentists();
+    const unsubscribe = events.subscribe((event) => {
+      if (event && event.type === EVENT_TYPES.BUDGET_CREATED) {
+        loadDentists();
+      }
     });
 
     return () => {
