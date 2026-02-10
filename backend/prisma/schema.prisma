@@ -35,9 +35,25 @@ model Patient {
   @@map("patients")
 }
 
+model Dentist {
+  id        Int      @id @default(autoincrement())
+  name      String   @db.VarChar(255)
+  cro       String   @unique @db.VarChar(20)
+  phone     String?  @db.VarChar(20)
+  email     String?  @db.VarChar(255)
+  specialty String?  @db.VarChar(100)
+  active    Boolean  @default(true)
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @default(now()) @updatedAt @map("updated_at")
+  budgets   Budget[]
+
+  @@map("dentists")
+}
+
 model Budget {
   id         Int          @id @default(autoincrement())
   patientId  Int          @map("patient_id")
+  dentistId  Int?         @map("dentist_id")
   total      Decimal      @db.Decimal(10, 2)
   discount   Decimal      @default(0) @db.Decimal(10, 2)
   finalTotal Decimal      @map("final_total") @db.Decimal(10, 2)
@@ -47,6 +63,7 @@ model Budget {
   createdAt  DateTime     @default(now()) @map("created_at")
   updatedAt  DateTime     @default(now()) @updatedAt @map("updated_at")
   patient    Patient      @relation(fields: [patientId], references: [id], onDelete: Cascade)
+  dentist    Dentist?     @relation(fields: [dentistId], references: [id], onDelete: SetNull)
   user       User         @relation(fields: [createdBy], references: [id])
   items      BudgetItem[]
 

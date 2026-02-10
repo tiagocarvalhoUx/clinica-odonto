@@ -3,6 +3,7 @@ import cors from "cors";
 import dotenv from "dotenv";
 import authRoutes from "./routes/auth.routes.js";
 import patientRoutes from "./routes/patient.routes.js";
+import dentistRoutes from "./routes/dentist.routes.js";
 import budgetRoutes from "./routes/budget.routes.js";
 import reportRoutes from "./routes/report.routes.js";
 import {
@@ -48,6 +49,7 @@ app.get("/health", (req, res) => {
 // API Routes
 app.use("/api/auth", authRoutes);
 app.use("/api/patients", patientRoutes);
+app.use("/api/dentists", dentistRoutes);
 app.use("/api/budgets", budgetRoutes);
 app.use("/api/reports", reportRoutes);
 // Error handling

@@ -10,6 +10,7 @@
   import Dashboard from './pages/Dashboard.svelte';
   import Patients from './pages/Patients.svelte';
   import PatientDetail from './pages/PatientDetail.svelte';
+  import Dentists from './pages/Dentists.svelte';
   import Budgets from './pages/Budgets.svelte';
   import BudgetNew from './pages/BudgetNew.svelte';
   import BudgetDetail from './pages/BudgetDetail.svelte';
@@ -38,6 +39,7 @@
         <Route path="/patients/:id" let:params>
           <PatientDetail id={params.id} />
         </Route>
+        <Route path="/dentists" component={Dentists} />
         <Route path="/budgets" component={Budgets} />
         <Route path="/budgets/new" component={BudgetNew} />
         <Route path="/budgets/:id" let:params>

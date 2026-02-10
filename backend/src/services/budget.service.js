@@ -13,6 +13,14 @@ export const budgetService = {
             email: true,
           },
         },
+        dentist: {
+          select: {
+            id: true,
+            name: true,
+            cro: true,
+            specialty: true,
+          },
+        },
         user: {
           select: {
             id: true,
@@ -35,6 +43,14 @@ export const budgetService = {
             name: true,
             phone: true,
             email: true,
+          },
+        },
+        dentist: {
+          select: {
+            id: true,
+            name: true,
+            cro: true,
+            specialty: true,
           },
         },
         user: {
@@ -60,6 +76,14 @@ export const budgetService = {
       where: { patientId: parseInt(patientId) },
       orderBy: { createdAt: "desc" },
       include: {
+        dentist: {
+          select: {
+            id: true,
+            name: true,
+            cro: true,
+            specialty: true,
+          },
+        },
         user: {
           select: {
             id: true,
@@ -72,7 +96,7 @@ export const budgetService = {
     });
   },
 
-  async create({ patientId, userId, items, notes, discount = 0 }) {
+  async create({ patientId, dentistId, userId, items, notes, discount = 0 }) {
     // Calculate totals
     const total = items.reduce(
       (sum, item) =>
@@ -87,6 +111,7 @@ export const budgetService = {
     const budget = await prisma.budget.create({
       data: {
         patientId: parseInt(patientId),
+        dentistId: dentistId ? parseInt(dentistId) : null,
         createdBy: parseInt(userId),
         total,
         discount: discountAmount,
@@ -112,6 +137,14 @@ export const budgetService = {
             name: true,
             phone: true,
             email: true,
+          },
+        },
+        dentist: {
+          select: {
+            id: true,
+            name: true,
+            cro: true,
+            specialty: true,
           },
         },
         user: {
@@ -158,6 +191,9 @@ export const budgetService = {
           where: { id: parseInt(id) },
           data: {
             ...budgetData,
+            dentistId: budgetData.dentistId
+              ? parseInt(budgetData.dentistId)
+              : null,
             items: {
               create: items.map((item) => {
                 const unitPrice = parseFloat(item.unitPrice || item.price);
@@ -178,6 +214,14 @@ export const budgetService = {
                 name: true,
                 phone: true,
                 email: true,
+              },
+            },
+            dentist: {
+              select: {
+                id: true,
+                name: true,
+                cro: true,
+                specialty: true,
               },
             },
             user: {
@@ -211,7 +255,12 @@ export const budgetService = {
 
       return await prisma.budget.update({
         where: { id: parseInt(id) },
-        data: budgetData,
+        data: {
+          ...budgetData,
+          dentistId: budgetData.dentistId
+            ? parseInt(budgetData.dentistId)
+            : null,
+        },
         include: {
           patient: {
             select: {
@@ -219,6 +268,14 @@ export const budgetService = {
               name: true,
               phone: true,
               email: true,
+            },
+          },
+          dentist: {
+            select: {
+              id: true,
+              name: true,
+              cro: true,
+              specialty: true,
             },
           },
           user: {
@@ -265,6 +322,14 @@ export const budgetService = {
               name: true,
               phone: true,
               email: true,
+            },
+          },
+          dentist: {
+            select: {
+              id: true,
+              name: true,
+              cro: true,
+              specialty: true,
             },
           },
           user: {

@@ -186,6 +186,27 @@
         </div>
       </div>
 
+      <!-- Dentist Info -->
+      {#if budget.dentist}
+        <div class="card mb-6">
+          <h2 class="text-xl font-semibold text-gray-900 mb-4">Dentista Responsável</h2>
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <div>
+              <p class="text-sm text-gray-500">Nome</p>
+              <p class="text-lg font-medium">{budget.dentist.name}</p>
+            </div>
+            <div>
+              <p class="text-sm text-gray-500">CRO</p>
+              <p class="text-lg font-medium">{budget.dentist.cro}</p>
+            </div>
+            <div>
+              <p class="text-sm text-gray-500">Especialidade</p>
+              <p class="text-lg font-medium">{budget.dentist.specialty || '-'}</p>
+            </div>
+          </div>
+        </div>
+      {/if}
+
       <!-- Items -->
       <div class="card mb-6">
         <div class="flex items-center justify-between mb-4">

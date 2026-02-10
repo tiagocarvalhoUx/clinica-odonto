@@ -23,6 +23,8 @@ export const reportController = {
         { header: "Paciente", key: "patient", width: 25 },
         { header: "Telefone", key: "phone", width: 18 },
         { header: "Email", key: "email", width: 30 },
+        { header: "Dentista", key: "dentist", width: 25 },
+        { header: "CRO", key: "cro", width: 15 },
         { header: "Valor Total", key: "total", width: 15 },
         { header: "Status", key: "status", width: 18 },
         { header: "Observações", key: "notes", width: 40 },
@@ -54,7 +56,9 @@ export const reportController = {
           patient: budget.patient.name,
           phone: budget.patient.phone || "-",
           email: budget.patient.email || "-",
-          total: parseFloat(budget.totalValue),
+          dentist: budget.dentist ? budget.dentist.name : "-",
+          cro: budget.dentist ? budget.dentist.cro : "-",
+          total: parseFloat(budget.finalTotal || budget.total),
           status: getStatusLabel(budget.status),
           notes: budget.notes || "-",
           user: budget.user.name,
@@ -108,6 +112,7 @@ export const reportController = {
       itemsSheet.columns = [
         { header: "ID Orçamento", key: "budgetId", width: 15 },
         { header: "Paciente", key: "patient", width: 25 },
+        { header: "Dentista", key: "dentist", width: 25 },
         { header: "Descrição", key: "description", width: 40 },
         { header: "Valor", key: "price", width: 15 },
       ];
@@ -135,8 +140,9 @@ export const reportController = {
           const row = itemsSheet.addRow({
             budgetId: budget.id,
             patient: budget.patient.name,
+            dentist: budget.dentist ? budget.dentist.name : "-",
             description: item.description,
-            price: parseFloat(item.price),
+            price: parseFloat(item.total || item.price),
           });
 
           row.getCell("price").numFmt = "R$ #,##0.00";
@@ -210,7 +216,7 @@ export const reportController = {
       // Apply auto-filter
       budgetsSheet.autoFilter = {
         from: "A1",
-        to: "I1",
+        to: "K1",
       };
 
       patientsSheet.autoFilter = {

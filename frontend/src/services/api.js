@@ -121,6 +121,56 @@ export const api = {
     },
   },
 
+  // Dentist endpoints
+  dentists: {
+    getAll: async () => {
+      const response = await fetch(`${API_URL}/dentists`, {
+        headers: getAuthHeaders(),
+      });
+      return handleResponse(response);
+    },
+
+    getActive: async () => {
+      const response = await fetch(`${API_URL}/dentists/active`, {
+        headers: getAuthHeaders(),
+      });
+      return handleResponse(response);
+    },
+
+    getById: async (id) => {
+      const response = await fetch(`${API_URL}/dentists/${id}`, {
+        headers: getAuthHeaders(),
+      });
+      return handleResponse(response);
+    },
+
+    create: async (data) => {
+      const response = await fetch(`${API_URL}/dentists`, {
+        method: "POST",
+        headers: getAuthHeaders(),
+        body: JSON.stringify(data),
+      });
+      return handleResponse(response);
+    },
+
+    update: async (id, data) => {
+      const response = await fetch(`${API_URL}/dentists/${id}`, {
+        method: "PUT",
+        headers: getAuthHeaders(),
+        body: JSON.stringify(data),
+      });
+      return handleResponse(response);
+    },
+
+    delete: async (id) => {
+      const response = await fetch(`${API_URL}/dentists/${id}`, {
+        method: "DELETE",
+        headers: getAuthHeaders(),
+      });
+      return handleResponse(response);
+    },
+  },
+
   // Budget endpoints
   budgets: {
     getAll: async () => {
