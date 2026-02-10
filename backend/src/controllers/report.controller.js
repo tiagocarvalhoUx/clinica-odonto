@@ -49,9 +49,7 @@ export const reportController = {
       budgetsSheet.getRow(1).height = 25;
 
       // Add data
-      console.log("Total budgets:", budgets.length);
       budgets.forEach((budget) => {
-        console.log("Budget ID:", budget.id, "dentistId:", budget.dentistId, "Dentist obj:", JSON.stringify(budget.dentist));
         const row = budgetsSheet.addRow({
           id: budget.id,
           date: new Date(budget.createdAt).toLocaleString("pt-BR"),
