@@ -1,17 +1,15 @@
 import { PrismaClient } from "@prisma/client";
 
-// Hardcoded database URL para funcionar na Vercel
-const DATABASE_URL = process.env.DATABASE_URL || "mysql://root:GmsgWnHJmPzuljWrRSxfUPLQVUJIIhWC@crossover.proxy.rlwy.net:56088/railway";
+// Forçar URL correta - ignorar variável de ambiente que pode estar errada
+const DATABASE_URL = "mysql://root:GmsgWnHJmPzuljWrRSxfUPLQVUJIIhWC@crossover.proxy.rlwy.net:56088/railway";
 
 console.log("Initializing Prisma Client...");
-console.log("Using DATABASE_URL:", DATABASE_URL ? "configured" : "missing");
+console.log("DATABASE_URL:", DATABASE_URL);
+
+// Configurar Prisma com a URL correta
+process.env.DATABASE_URL = DATABASE_URL;
 
 const prisma = new PrismaClient({
-  datasources: {
-    db: {
-      url: DATABASE_URL,
-    },
-  },
   log: ["error", "warn", "info"],
 });
 
