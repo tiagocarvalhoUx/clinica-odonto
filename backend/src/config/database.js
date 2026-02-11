@@ -1,7 +1,7 @@
 import { PrismaClient } from "@prisma/client";
 
-// Forçar URL correta com SSL
-const DATABASE_URL = "mysql://root:GmsgWnHJmPzuljWrRSxfUPLQVUJIIhWC@crossover.proxy.rlwy.net:56088/railway?sslaccept=strict&connect_timeout=30";
+// Forçar URL correta - Railway precisa de SSL
+const DATABASE_URL = "mysql://root:GmsgWnHJmPzuljWrRSxfUPLQVUJIIhWC@crossover.proxy.rlwy.net:56088/railway?sslmode=require&connection_limit=1&pool_timeout=0&connect_timeout=10";
 
 console.log("Initializing Prisma Client...");
 
@@ -9,12 +9,7 @@ console.log("Initializing Prisma Client...");
 process.env.DATABASE_URL = DATABASE_URL;
 
 const prisma = new PrismaClient({
-  log: ["error", "warn", "info"],
-  __internal: {
-    engine: {
-      connectionLimit: 5,
-    },
-  },
+  log: ["error", "warn"],
 });
 
 // Test connection on startup
