@@ -42,7 +42,9 @@ export const authService = {
   },
 
   async login({ email, password }) {
+    console.log("Service login - searching user:", email);
     const user = await prisma.user.findUnique({ where: { email } });
+    console.log("Service login - user found:", user ? "yes" : "no");
 
     if (!user) {
       throw { statusCode: 401, message: "Credenciais inválidas" };

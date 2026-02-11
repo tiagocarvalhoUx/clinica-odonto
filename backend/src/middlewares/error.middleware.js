@@ -1,5 +1,8 @@
 export const errorHandler = (err, req, res, next) => {
   console.error("Error:", err);
+  console.error("Error stack:", err.stack);
+  console.error("Error code:", err.code);
+  console.error("Error meta:", err.meta);
 
   // Prisma errors
   if (err.code === "P2002") {

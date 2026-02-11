@@ -18,14 +18,18 @@ export const authController = {
 
   async login(req, res, next) {
     try {
+      console.log("Login attempt:", req.body.email);
       const errors = validationResult(req);
       if (!errors.isEmpty()) {
+        console.log("Validation errors:", errors.array());
         return res.status(400).json({ errors: errors.array() });
       }
 
       const result = await authService.login(req.body);
+      console.log("Login successful:", result.user.email);
       res.json(result);
     } catch (error) {
+      console.error("Login error:", error);
       next(error);
     }
   },
