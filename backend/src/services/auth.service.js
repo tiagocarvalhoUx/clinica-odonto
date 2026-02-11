@@ -42,35 +42,40 @@ export const authService = {
   },
 
   async login({ email, password }) {
-    console.log("Service login - searching user:", email);
-    const user = await prisma.user.findUnique({ where: { email } });
-    console.log("Service login - user found:", user ? "yes" : "no");
+    try {
+      console.log("Service login - searching user:", email);
+      const user = await prisma.user.findUnique({ where: { email } });
+      console.log("Service login - user found:", user ? "yes" : "no");
 
-    if (!user) {
-      throw { statusCode: 401, message: "Credenciais inválidas" };
-    }
+      if (!user) {
+        throw { statusCode: 401, message: "Credenciais inválidas" };
+      }
 
-    const isPasswordValid = await bcrypt.compare(password, user.password);
+      const isPasswordValid = await bcrypt.compare(password, user.password);
 
-    if (!isPasswordValid) {
-      throw { statusCode: 401, message: "Credenciais inválidas" };
-    }
+      if (!isPasswordValid) {
+        throw { statusCode: 401, message: "Credenciais inválidas" };
+      }
 
-    const token = jwt.sign(
-      { id: user.id, email: user.email, role: user.role },
-      authConfig.jwtSecret,
-      { expiresIn: authConfig.jwtExpiresIn },
-    );
+      const token = jwt.sign(
+        { id: user.id, email: user.email, role: user.role },
+        authConfig.jwtSecret,
+        { expiresIn: authConfig.jwtExpiresIn },
+      );
 
-    return {
-      user: {
-        id: user.id,
-        name: user.name,
-        email: user.email,
-        role: user.role,
-      },
+      return {
+        user: {
+          id: user.id,
+          name: user.name,
+          email: user.email,
+          role: user.role,
+        },
       token,
-    };
+      };
+    } catch (error) {
+      console.error("Login service error:", error);
+      throw error;
+    }
   },
 
   async getProfile(userId) {

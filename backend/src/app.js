@@ -15,6 +15,12 @@ dotenv.config();
 
 const app = express();
 
+// Request logging middleware
+app.use((req, res, next) => {
+  console.log(`${new Date().toISOString()} - ${req.method} ${req.path}`);
+  next();
+});
+
 // CORS - Permite todas as origens
 app.use(cors({
   origin: '*',
