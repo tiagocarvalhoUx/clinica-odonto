@@ -130,10 +130,7 @@ export const budgetService = {
           }),
         },
       },
-      include: {
-        items: true,
-      },
-    });
+          });
 
     // Buscar o orçamento completo separadamente
     return await this.getById(budget.id);
