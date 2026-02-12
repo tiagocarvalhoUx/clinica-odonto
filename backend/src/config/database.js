@@ -1,7 +1,7 @@
 import { PrismaClient } from "@prisma/client";
 
-// Forçar URL correta - Railway precisa de SSL
-const DATABASE_URL = "mysql://root:GmsgWnHJmPzuljWrRSxfUPLQVUJIIhWC@crossover.proxy.rlwy.net:56088/railway?sslmode=require&connection_limit=1&pool_timeout=0&connect_timeout=10";
+// Tentar sem SSL - Railway pode ter problema com SSL na Vercel
+const DATABASE_URL = "mysql://root:GmsgWnHJmPzuljWrRSxfUPLQVUJIIhWC@crossover.proxy.rlwy.net:56088/railway";
 
 console.log("Initializing Prisma Client...");
 
