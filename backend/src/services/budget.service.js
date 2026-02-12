@@ -131,34 +131,12 @@ export const budgetService = {
         },
       },
       include: {
-        patient: {
-          select: {
-            id: true,
-            name: true,
-            phone: true,
-            email: true,
-          },
-        },
-        dentist: {
-          select: {
-            id: true,
-            name: true,
-            cro: true,
-            specialty: true,
-          },
-        },
-        user: {
-          select: {
-            id: true,
-            name: true,
-            email: true,
-          },
-        },
         items: true,
       },
     });
 
-    return budget;
+    // Buscar o orçamento completo separadamente
+    return await this.getById(budget.id);
   },
 
   async update(id, data) {
