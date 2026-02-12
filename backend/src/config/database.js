@@ -1,7 +1,7 @@
 import { PrismaClient } from "@prisma/client";
 
-// Tentar sem SSL - Railway pode ter problema com SSL na Vercel
-const DATABASE_URL = "mysql://root:GmsgWnHJmPzuljWrRSxfUPLQVUJIIhWC@crossover.proxy.rlwy.net:56088/railway";
+// Configuração para serverless - connection_limit=1 é obrigatório
+const DATABASE_URL = "mysql://root:GmsgWnHJmPzuljWrRSxfUPLQVUJIIhWC@crossover.proxy.rlwy.net:56088/railway?connection_limit=1&pool_timeout=10&connect_timeout=10";
 
 console.log("Initializing Prisma Client...");
 
