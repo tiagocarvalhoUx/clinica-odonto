@@ -4,15 +4,15 @@ generator client {
 }
 
 datasource db {
-  provider = "mysql"
+  provider = "postgresql"
   url      = env("DATABASE_URL")
 }
 
 model User {
-  id        Int      @id @default(autoincrement())
-  name      String   @db.VarChar(255)
-  email     String   @unique @db.VarChar(255)
-  password  String   @db.VarChar(255)
+  id        Int      @id @default(sequence())
+  name      String
+  email     String   @unique
+  password  String
   role      UserRole @default(FUNCIONARIA)
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @default(now()) @updatedAt @map("updated_at")
@@ -22,13 +22,13 @@ model User {
 }
 
 model Patient {
-  id        Int       @id @default(autoincrement())
-  name      String    @db.VarChar(255)
-  phone     String?   @db.VarChar(20)
-  email     String?   @db.VarChar(255)
-  cpf       String?   @db.VarChar(14)
-  birthDate DateTime? @map("birth_date") @db.Date
-  address   String?   @db.Text
+  id        Int       @id @default(sequence())
+  name      String
+  phone     String?
+  email     String?
+  cpf       String?
+  birthDate DateTime? @map("birth_date")
+  address   String?
   createdAt DateTime  @default(now()) @map("created_at")
   updatedAt DateTime  @default(now()) @updatedAt @map("updated_at")
   budgets   Budget[]
@@ -37,12 +37,12 @@ model Patient {
 }
 
 model Dentist {
-  id        Int      @id @default(autoincrement())
-  name      String   @db.VarChar(255)
-  cro       String   @unique @db.VarChar(20)
-  phone     String?  @db.VarChar(20)
-  email     String?  @db.VarChar(255)
-  specialty String?  @db.VarChar(100)
+  id        Int      @id @default(sequence())
+  name      String
+  cro       String   @unique
+  phone     String?
+  email     String?
+  specialty String?
   active    Boolean  @default(true)
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @default(now()) @updatedAt @map("updated_at")
@@ -52,14 +52,14 @@ model Dentist {
 }
 
 model Budget {
-  id         Int          @id @default(autoincrement())
+  id         Int          @id @default(sequence())
   patientId  Int          @map("patient_id")
   dentistId  Int?         @map("dentist_id")
   total      Decimal      @db.Decimal(10, 2)
   discount   Decimal      @default(0) @db.Decimal(10, 2)
   finalTotal Decimal      @map("final_total") @db.Decimal(10, 2)
   status     BudgetStatus @default(EM_NEGOCIACAO)
-  notes      String?      @db.Text
+  notes      String?
   createdBy  Int          @map("created_by")
   createdAt  DateTime     @default(now()) @map("created_at")
   updatedAt  DateTime     @default(now()) @updatedAt @map("updated_at")
@@ -72,9 +72,9 @@ model Budget {
 }
 
 model BudgetItem {
-  id          Int      @id @default(autoincrement())
+  id          Int      @id @default(sequence())
   budgetId    Int      @map("budget_id")
-  description String   @db.VarChar(255)
+  description String
   quantity    Int      @default(1)
   unitPrice   Decimal  @map("unit_price") @db.Decimal(10, 2)
   total       Decimal  @db.Decimal(10, 2)
