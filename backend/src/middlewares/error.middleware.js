@@ -1,8 +1,15 @@
 export const errorHandler = (err, req, res, next) => {
   console.error("Error:", err);
+  // Attempt to serialize the full error object (including non-enumerable props)
+  try {
+    const full = JSON.stringify(err, Object.getOwnPropertyNames(err), 2);
+    console.error("Error full:", full);
+  } catch (serializeErr) {
+    console.error("Error serializing error object:", serializeErr);
+  }
   console.error("Error stack:", err.stack);
   console.error("Error code:", err.code);
-  console.error("Error meta:", err.meta);
+  console.error("Error meta:", err.meta ?? "<not provided>");
 
   // Prisma errors
   if (err.code === "P2002") {

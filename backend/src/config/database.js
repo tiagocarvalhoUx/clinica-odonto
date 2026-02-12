@@ -1,20 +1,17 @@
 import { PrismaClient } from "@prisma/client";
 
-// URL do Neon PostgreSQL - SUBSTITUIR quando criar o banco
-const DATABASE_URL = process.env.DATABASE_URL || "postgresql://user:pass@localhost:5432/db";
-
 console.log("Initializing Prisma Client...");
 
-// Configurar Prisma com a URL correta
-process.env.DATABASE_URL = DATABASE_URL;
+// Use a global singleton to avoid exhausting DB connections in serverless envs
+let prisma;
 
-const prisma = new PrismaClient({
-  log: ["error", "warn"],
-});
-
-// Test connection on startup
-prisma.$connect()
-  .then(() => console.log("✅ Prisma connected successfully"))
-  .catch((err) => console.error("❌ Prisma connection failed:", err.message));
+if (process.env.NODE_ENV === "production") {
+  prisma = new PrismaClient({ log: ["error", "warn"] });
+} else {
+  if (!globalThis._prisma) {
+    globalThis._prisma = new PrismaClient({ log: ["error", "warn"] });
+  }
+  prisma = globalThis._prisma;
+}
 
 export default prisma;
