@@ -97,6 +97,8 @@ export const budgetService = {
   },
 
   async create({ patientId, dentistId, userId, items, notes, discount = 0 }) {
+    console.log("Creating budget:", { patientId, dentistId, userId });
+    
     // Calculate totals
     const total = items.reduce(
       (sum, item) =>
@@ -130,7 +132,12 @@ export const budgetService = {
           }),
         },
       },
-          });
+      select: {
+        id: true,
+      },
+    });
+
+    console.log("Budget created with id:", budget.id);
 
     // Buscar o orçamento completo separadamente
     return await this.getById(budget.id);
